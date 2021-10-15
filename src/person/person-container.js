@@ -1,110 +1,83 @@
-import React from 'react';
-import APIResponseErrorMessage from "../commons/errorhandling/api-response-error-message";
-import {
-    Button,
-    Card,
-    CardHeader,
-    Col,
-    Modal,
-    ModalBody,
-    ModalHeader,
-    Row
-} from 'reactstrap';
-import PersonForm from "./components/person-form";
+import React, { useState, useEffect } from 'react';
+import { Button, Card, CardHeader, Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 
-import * as API_USERS from "./api/person-api"
+import APIResponseErrorMessage from "../commons/errorhandling/api-response-error-message";
+import PersonForm from "./components/person-form";
+import * as API_USERS from "./api/person-api";
 import PersonTable from "./components/person-table";
 
+function PersonContainer(props) {
+    const [isSelected, setIsSelected] = useState(false);
+    const [tableData, setTableData] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
 
+    // Store error status and message in the same object because we don't want 
+    // to render the component twice (using setError and setErrorStatus)
+    // This approach can be used for linked state variables.
+    const [error, setError] = useState({ status: 0, errorMessage: null });
 
-class PersonContainer extends React.Component {
+    // componentDidMount
+    useEffect(() => {
+        fetchPersons();
+    }, []);
 
-    constructor(props) {
-        super(props);
-        this.toggleForm = this.toggleForm.bind(this);
-        this.reload = this.reload.bind(this);
-        this.state = {
-            selected: false,
-            collapseForm: false,
-            tableData: [],
-            isLoaded: false,
-            errorStatus: 0,
-            error: null
-        };
-    }
-
-    componentDidMount() {
-        this.fetchPersons();
-    }
-
-    fetchPersons() {
+    function fetchPersons() {
         return API_USERS.getPersons((result, status, err) => {
-
             if (result !== null && status === 200) {
-                this.setState({
-                    tableData: result,
-                    isLoaded: true
-                });
+                setTableData((tableData) => (result));
+                setIsLoaded((isLoaded) => (true));
             } else {
-                this.setState(({
-                    errorStatus: status,
-                    error: err
-                }));
+                setError((error) => ({ status: status, errorMessage: err }));
             }
         });
     }
 
-    toggleForm() {
-        this.setState({selected: !this.state.selected});
+    function toggleForm() {
+        setIsSelected((isSelected) => (!isSelected));
     }
 
+    function reload() {
+        setIsLoaded((isLoaded) => (false));
 
-    reload() {
-        this.setState({
-            isLoaded: false
-        });
-        this.toggleForm();
-        this.fetchPersons();
+        toggleForm();
+        fetchPersons();
     }
 
-    render() {
-        return (
-            <div>
-                <CardHeader>
-                    <strong> Person Management </strong>
-                </CardHeader>
-                <Card>
-                    <br/>
-                    <Row>
-                        <Col sm={{size: '8', offset: 1}}>
-                            <Button color="primary" onClick={this.toggleForm}>Add Person </Button>
-                        </Col>
-                    </Row>
-                    <br/>
-                    <Row>
-                        <Col sm={{size: '8', offset: 1}}>
-                            {this.state.isLoaded && <PersonTable tableData = {this.state.tableData}/>}
-                            {this.state.errorStatus > 0 && <APIResponseErrorMessage
-                                                            errorStatus={this.state.errorStatus}
-                                                            error={this.state.error}
-                                                        />   }
-                        </Col>
-                    </Row>
-                </Card>
+    return (
+        <div>
+            <CardHeader>
+                <strong> Person Management </strong>
+            </CardHeader>
+            <Card>
+                <br />
+                <Row>
+                    <Col sm={{ size: '8', offset: 1 }}>
+                        <Button color="primary" onClick={toggleForm}>Add Person </Button>
+                    </Col>
+                </Row>
+                <br />
+                <Row>
+                    <Col sm={{ size: '8', offset: 1 }}>
+                        {isLoaded && <PersonTable tableData={tableData} />}
+                        {error.status > 0 &&
+                            <APIResponseErrorMessage
+                                errorStatus={error.status}
+                                error={error.errorMessage}
+                            />}
+                    </Col>
+                </Row>
+            </Card>
 
-                <Modal isOpen={this.state.selected} toggle={this.toggleForm}
-                       className={this.props.className} size="lg">
-                    <ModalHeader toggle={this.toggleForm}> Add Person: </ModalHeader>
-                    <ModalBody>
-                        <PersonForm reloadHandler={this.reload}/>
-                    </ModalBody>
-                </Modal>
+            <Modal isOpen={isSelected} toggle={toggleForm} size="lg">
+                <ModalHeader toggle={toggleForm}> Add Person: </ModalHeader>
+                <ModalBody>
+                    <PersonForm reloadHandler={reload} />
+                </ModalBody>
+            </Modal>
 
-            </div>
-        )
+        </div>
+    );
 
-    }
 }
-
 
 export default PersonContainer;

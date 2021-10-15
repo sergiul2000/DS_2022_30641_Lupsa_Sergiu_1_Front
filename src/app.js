@@ -1,19 +1,19 @@
-import React from 'react'
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
-import NavigationBar from './navigation-bar'
-import Home from './home/home';
-import PersonContainer from './person/person-container'
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
+import NavigationBar from './navigation-bar';
+import Home from './home/home';
+import PersonContainer from './person/person-container';
 import ErrorPage from './commons/errorhandling/error-page';
 import styles from './commons/styles/project-style.css';
 
-class App extends React.Component {
-
-
-    render() {
-
-        return (
-            <div className={styles.back}>
+/*
+    Namings: https://reactjs.org/docs/jsx-in-depth.html#html-tags-vs.-react-components
+    Should I use hooks?: https://reactjs.org/docs/hooks-faq.html#should-i-use-hooks-classes-or-a-mix-of-both
+*/
+function App() {
+    return (
+        <div className={styles.back}>
             <Router>
                 <div>
                     <NavigationBar />
@@ -22,29 +22,28 @@ class App extends React.Component {
                         <Route
                             exact
                             path='/'
-                            render={() => <Home/>}
+                            render={() => <Home />}
                         />
 
                         <Route
                             exact
                             path='/person'
-                            render={() => <PersonContainer/>}
+                            render={() => <PersonContainer />}
                         />
 
                         {/*Error*/}
                         <Route
                             exact
                             path='/error'
-                            render={() => <ErrorPage/>}
+                            render={() => <ErrorPage />}
                         />
 
-                        <Route render={() =><ErrorPage/>} />
+                        <Route render={() => <ErrorPage />} />
                     </Switch>
                 </div>
             </Router>
-            </div>
-        )
-    };
+        </div>
+    );
 }
 
-export default App
+export default App;

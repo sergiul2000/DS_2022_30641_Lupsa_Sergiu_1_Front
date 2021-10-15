@@ -1,12 +1,12 @@
-function performRequest(request, callback){
+function performRequest(request, callback) {
     fetch(request)
         .then(
-            function(response) {
+            function (response) {
                 if (response.ok) {
-                    response.json().then(json => callback(json, response.status,null));
+                    response.json().then(json => callback(json, response.status, null));
                 }
                 else {
-                    response.json().then(err => callback(null, response.status,  err));
+                    response.json().then(err => callback(null, response.status, err));
                 }
             })
         .catch(function (err) {

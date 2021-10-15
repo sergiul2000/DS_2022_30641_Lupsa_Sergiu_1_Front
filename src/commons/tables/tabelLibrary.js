@@ -1,8 +1,8 @@
-
 let jsonStyles = require('./fields/styles/json-styles');
+
 function getColumns(data) {
     return data.map(c => {
-        return({
+        return ({
             Header: c.header,
             accessor: c.accessor,
             getHeaderProps: () => {
@@ -19,6 +19,6 @@ function getColumns(data) {
     })
 }
 
-export  {
+export {
     getColumns,
 }

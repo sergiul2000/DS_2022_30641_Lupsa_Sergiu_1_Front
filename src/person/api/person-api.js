@@ -1,6 +1,5 @@
-import {HOST} from '../../commons/hosts';
+import { HOST } from '../../commons/hosts';
 import RestApiClient from "../../commons/api/rest-client";
-
 
 const endpoint = {
     person: '/person'
@@ -14,19 +13,19 @@ function getPersons(callback) {
     RestApiClient.performRequest(request, callback);
 }
 
-function getPersonById(params, callback){
+function getPersonById(params, callback) {
     let request = new Request(HOST.backend_api + endpoint.person + params.id, {
-       method: 'GET'
+        method: 'GET'
     });
 
     console.log(request.url);
     RestApiClient.performRequest(request, callback);
 }
 
-function postPerson(user, callback){
-    let request = new Request(HOST.backend_api + endpoint.person , {
+function postPerson(user, callback) {
+    let request = new Request(HOST.backend_api + endpoint.person, {
         method: 'POST',
-        headers : {
+        headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         },

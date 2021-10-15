@@ -1,11 +1,8 @@
-import React from 'react'
+import React from 'react';
 import styles from '../styles/project-style.css';
 
-class ErrorPage extends React.Component {
-
-    render() {
-            return <h3 className={styles.errorTitle}>Page not found.</h3>;
-    }
+function ErrorPage(props) {
+    return (<h3 className={styles.errorTitle}>Page not found.</h3>);
 }
 
-export default ErrorPage
+export default ErrorPage;
