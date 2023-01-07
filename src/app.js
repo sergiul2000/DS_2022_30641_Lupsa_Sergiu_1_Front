@@ -17,6 +17,7 @@ import {
   UserDevices,
   UserMonitorizations,
   EditDevicesOfUser,
+  EditUser,
   // UpdateDeviceOfUser,
   // DeleteDeviceOfUser,
 } from "./pages/Admin";
@@ -42,6 +43,8 @@ function App() {
         <Route exact path="/admin" element={<UserAdmin />} />
 
         <Route exact path="/yourDevices" element={<YourDevices />} />
+
+        <Route exact path="/updateUser" element={<EditUser />} />
 
         <Route
           exact

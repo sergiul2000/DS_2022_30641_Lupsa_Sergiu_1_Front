@@ -19,6 +19,9 @@ function UserAdmin() {
   const viewDevicesAdmin = (e) => {
     navigate("/viewDevicesOfUser");
   };
+  const updateUser = (e) => {
+    navigate("/updateUser");
+  };
   const viewConsumptionsAdmin = (e) => {
     navigate("/viewConsumptionsOfUser");
   };
@@ -44,6 +47,31 @@ function UserAdmin() {
         // localStorage.setItem("username", JSON.stringify(Response.username));
         // localStorage.setItem("role", JSON.stringify(Response.role));
         alert("Deleted succesfully!");
+      });
+  };
+
+  const listUsers = (e) => {
+    // const selectedUser = localStorage.getItem("user_id");
+    e.preventDefault();
+    // const device = { id, address, description, maxim_hourly_energy };
+    fetch("http://localhost:8080/users/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // body: JSON.stringify(device),
+    })
+      .then((Response) => Response.json())
+      .then((Response) => {
+        console.log(Response);
+        const display = document.getElementById("listUsers");
+        display.textContent = "";
+        // let stringAuxiliar = "";
+        let i;
+        for (i = 0; i < Response.length; i++) {
+          display.textContent += Response[i].username.concat("\n");
+        }
+        // console.log(stringAuxiliar);
       });
   };
   // const updateDevices = (e) => {
@@ -103,8 +131,14 @@ function UserAdmin() {
         <Button type="button" onClick={selectUser}>
           Select user
         </Button>
+        <Button type="button" onClick={updateUser}>
+          Update user
+        </Button>
         <Button type="button" onClick={deleteUser}>
           Delete User
+        </Button>
+        <Button type="button" onClick={listUsers}>
+          List Users
         </Button>
         <Input
           type="text"
@@ -114,6 +148,7 @@ function UserAdmin() {
           value={Users_username}
           onChange={(e) => setUsername(e.target.value)}
         />{" "}
+        <p id="listUsers" />
         {/* </View> */}
       </div>
     </>
@@ -341,15 +376,21 @@ function EditDevicesOfUser() {
   };
   const deleteDevice = (e) => {
     e.preventDefault();
+
+    let lastString = localStorage.getItem("user_id").concat("/");
+    lastString = lastString.concat(id);
     // const device = { id, address, description, maxim_hourly_energy };
-    fetch("http://localhost:8080/device/".concat(id), {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // body: JSON.stringify(device),
-    })
-      .then((Response) => Response.json())
+    fetch(
+      "http://localhost:8080/users/deleteDeviceOfClient/".concat(lastString),
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // body: JSON.stringify(device),
+      }
+    )
+      // .then((Response) => Response.json())
       .then((Response) => {
         console.log(Response);
         // localStorage.setItem("id", JSON.stringify(Response.id));
@@ -408,11 +449,89 @@ function EditDevicesOfUser() {
   );
 }
 
+function EditUser() {
+  const [username, setUsername] = useState("");
+  const [address, setAddress] = useState("");
+  const [password, setPassword] = useState("");
+  const [age, setAge] = useState("");
+
+  const navigate = useNavigate();
+  const userFromLocalStorage = localStorage.getItem("user_id");
+
+  useEffect(() => {
+    if (userFromLocalStorage == null) navigate("/login");
+  }, []);
+
+  const updateUser = (e) => {
+    e.preventDefault();
+    const role = 1;
+    const users = { username, password, address, age, role };
+    fetch("http://localhost:8080/users/".concat(userFromLocalStorage), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(users),
+    })
+      .then((Response) => Response.json())
+      .then((Response) => {
+        console.log(Response);
+        // localStorage.setItem("id", JSON.stringify(Response.id));
+        // localStorage.setItem("username", JSON.stringify(Response.username));
+        // localStorage.setItem("role", JSON.stringify(Response.role));
+        alert("Updated succesfully!");
+      });
+  };
+  return (
+    <>
+      <div>
+        <Input
+          type="text"
+          id="UserUsername"
+          name="UserUsername"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <Input
+          type="text"
+          id="UserPassword"
+          name="UserPassword"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Input
+          type="text"
+          id="UserAddress"
+          name="UserAddress"
+          placeholder="User Address "
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+        />
+        <Input
+          type="number"
+          id="UserAge"
+          name="UserAge"
+          placeholder="User age "
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+        />
+        <Button type="button" onClick={updateUser}>
+          Update user
+        </Button>
+        {/* </View> */}
+      </div>
+    </>
+  );
+}
+
 export {
   UserAdmin,
   UserDevices,
   UserMonitorizations,
   EditDevicesOfUser,
+  EditUser,
   // UpdateDeviceOfUser,
   // DeleteDeviceOfUser,
 };
