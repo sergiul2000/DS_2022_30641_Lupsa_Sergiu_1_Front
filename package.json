@@ -15,8 +15,10 @@
     "react-router-dom": "^6.4.3",
     "react-scripts": "2.1.3",
     "react-table": "^6.10.0",
-    "reactstrap": "^7.0.2", 
-    "recharts": "latest"
+    "reactstrap": "^7.0.2",
+    "recharts": "latest",
+    "react-stomp": "^5.1.0",
+    "sockjs": "^0.3.24"
   },
   "scripts": {
     "start": "react-scripts start",

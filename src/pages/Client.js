@@ -5,6 +5,8 @@ import Input from "reactstrap/lib/Input";
 // import { StyleSheet, View } from "react";
 import { useNavigate } from "react-router";
 import { func } from "prop-types";
+import SockJsClient from "react-stomp";
+import { Alert } from "reactstrap";
 
 function UserClient() {
   const navigate = useNavigate();
@@ -21,9 +23,24 @@ function UserClient() {
     navigate("/yourConsumptions");
   };
 
+  let onMessageReceived = (msg) => {
+    console.log(msg);
+    alert(msg);
+  };
+  let onConnected = () => {
+    console.log("connected");
+  };
   return (
     <>
       <div>
+        <SockJsClient
+          url="http://localhost:8080/ws-message"
+          topics={["/topic/message"]}
+          onConnect={onConnected}
+          onDisconnect={console.log("Disconnected!")}
+          onMessage={(msg) => onMessageReceived(msg)}
+          debug={false}
+        />
         {/* <View style={styles.screenContainer}> */}
         <Button type="button" onClick={viewDevices}>
           View all your devices
