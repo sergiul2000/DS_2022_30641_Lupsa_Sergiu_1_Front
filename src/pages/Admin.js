@@ -22,6 +22,9 @@ function UserAdmin() {
   const updateUser = (e) => {
     navigate("/updateUser");
   };
+  const toChat = (e) => {
+    navigate("/chat");
+  };
   const viewConsumptionsAdmin = (e) => {
     navigate("/viewConsumptionsOfUser");
   };
@@ -139,6 +142,9 @@ function UserAdmin() {
         </Button>
         <Button type="button" onClick={listUsers}>
           List Users
+        </Button>
+        <Button type="button" onClick={toChat}>
+          Go to chat
         </Button>
         <Input
           type="text"

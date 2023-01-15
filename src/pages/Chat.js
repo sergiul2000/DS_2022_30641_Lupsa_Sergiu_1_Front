@@ -1,5 +1,6 @@
 import React from "react";
-import ChatRoom from ".\\components\\ChatRoom.js";
+import ChatRoom from "./ChatRoom.js";
+import "./chat.css";
 
 // const Chat = () => {
 //   return <ChatRoom />;

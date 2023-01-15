@@ -22,6 +22,9 @@ function UserClient() {
   const viewConsumptions = (e) => {
     navigate("/yourConsumptions");
   };
+  const toChat = () => {
+    navigate("/chat");
+  };
 
   let onMessageReceived = (msg) => {
     console.log(msg);
@@ -47,6 +50,9 @@ function UserClient() {
         </Button>
         <Button type="button" onClick={viewConsumptions}>
           View all monitorizations
+        </Button>
+        <Button type="button" onClick={toChat}>
+          Go to chat
         </Button>
         {/* </View> */}
       </div>
