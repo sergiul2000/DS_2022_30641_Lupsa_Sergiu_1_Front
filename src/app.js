@@ -21,6 +21,7 @@ import {
   // UpdateDeviceOfUser,
   // DeleteDeviceOfUser,
 } from "./pages/Admin";
+import { Chat } from "./pages/Chat.js";
 import { UserRegister } from "./pages/Register";
 
 /*
@@ -45,6 +46,8 @@ function App() {
         <Route exact path="/yourDevices" element={<YourDevices />} />
 
         <Route exact path="/updateUser" element={<EditUser />} />
+
+        <Route exact path="/chat" element={<Chat />} />
 
         <Route
           exact

@@ -3,6 +3,6 @@ version: '3'
 services:
 
   react:
-    image: frontend
+    image: frontend1
     ports:
        - "80:80"
